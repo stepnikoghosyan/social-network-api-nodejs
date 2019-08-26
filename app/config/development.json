@@ -1,0 +1,4 @@
+{
+  "dbConStr": "mongodb://localhost:27017/social_network",
+  "jwtPrivateKey": "myJwtPrivateKey"
+}

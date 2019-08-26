@@ -1,0 +1,42 @@
+{
+  "name": "social-netword-api-nodejs",
+  "version": "1.0.0",
+  "description": "Chat application API (Node.js + Express + MongoDB)",
+  "main": "./app/main.ts",
+  "scripts": {
+    "start": "nodemon index.js",
+    "tsc": "tsc",
+    "dev": "ts-node-dev --respawn --transpileOnly ./app/main.ts",
+    "prod": "tsc && node ./build/main.js"
+  },
+  "author": "Stepan Nikoghosyan",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express-fileupload": "^1.1.0",
+    "bcrypt": "^3.0.6",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.5",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.6.0",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.19.1",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/config": "0.0.34",
+    "@types/cors": "^2.8.6",
+    "@types/dotenv": "^6.1.1",
+    "@types/express": "^4.17.1",
+    "@types/joi": "^14.3.3",
+    "@types/jsonwebtoken": "^8.3.3",
+    "@types/mongoose": "^5.5.13",
+    "@types/morgan": "^1.7.37",
+    "@types/socket.io": "^2.1.2",
+    "ts-node-dev": "^1.0.0-pre.41",
+    "tslint": "^5.19.0",
+    "typescript": "^3.5.3"
+  }
+}

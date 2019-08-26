@@ -1,0 +1,4 @@
+{
+  "dbConStr": "dbConnectionString",
+  "jwtPrivateKey": "JwtPrivateKey"
+}
