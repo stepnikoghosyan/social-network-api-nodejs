@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/express-fileupload": "^1.1.0",
+    "@types/swagger-ui-express": "^3.0.1",
     "bcrypt": "^3.0.6",
     "cors": "^2.8.5",
     "express": "^4.17.1",
@@ -22,7 +23,9 @@
     "mongoose": "^5.6.0",
     "morgan": "^1.9.1",
     "nodemon": "^1.19.1",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.2.0",
+    "swagger-ui-express": "^4.0.7",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
@@ -35,6 +38,7 @@
     "@types/mongoose": "^5.5.13",
     "@types/morgan": "^1.7.37",
     "@types/socket.io": "^2.1.2",
+    "@types/yamljs": "^0.2.30",
     "ts-node-dev": "^1.0.0-pre.41",
     "tslint": "^5.19.0",
     "typescript": "^3.5.3"

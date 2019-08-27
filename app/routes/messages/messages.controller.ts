@@ -1,5 +1,5 @@
 import { IQueryParamsPayload, IPaginationResponse } from '../../shared/interfaces/pagination.model';
-import { MessageModel, IMessageModel, IMessagePayload, validateMessageCreation, IMessageUpdatePayload } from './message.model';
+import { MessageModel, IMessageModel, IMessagePayload, validateMessageCreation, IMessageUpdatePayload, validateMessageUpdate } from './message.model';
 import { IControllerResult } from '../../shared/interfaces/controller-result.model';
 import { RoomsController } from '../rooms/rooms.controller';
 
@@ -43,7 +43,7 @@ export const MessagesController = {
       return {
         error: {
           statusCode: 404,
-          errorMessage: 'Invalid room id.'
+          errorMessage: 'Room with given id was not found.'
         },
         data: null
       };
@@ -63,6 +63,17 @@ export const MessagesController = {
   },
 
   async editPut(messageID: string, payload: IMessageUpdatePayload): Promise<IControllerResult<IMessageModel>> {
+    const {error} = validateMessageUpdate(payload);
+    if (error) {
+      return {
+        error: {
+          statusCode: 400,
+          errorMessage: error.details[0].message
+        },
+        data: null
+      };
+    }
+
     const message = await MessageModel.findByIdAndUpdate(messageID, {
       message: payload.message,
       updatedDate: new Date()

@@ -8,9 +8,15 @@ import errorHandler from '../../shared/errorHandler';
 // controllers
 import { MessagesController } from './messages.controller';
 import validateObjectId from '../../middleware/validateObjectId.middleware';
+import { RoomsController } from '../rooms/rooms.controller';
 
 router.get('/:id', validateObjectId, async (req: Request, res: Response) => {
   // id -> room id
+  const result = await RoomsController.getById(req.params.id);
+  if (result.error) {
+    return errorHandler(res, result.error);
+  }
+
   const messages = await MessagesController.getByPagination(req.params.id, req.query);
   return successHandler(res, messages, 200);
 });

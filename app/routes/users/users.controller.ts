@@ -1,8 +1,9 @@
-import { UserModel, ISearchUserQueryParams } from './user.model';
+import { UserModel, ISearchUserQueryParams, IUserModel } from './user.model';
 import { Document } from 'mongoose';
+import { IPaginationResponse } from '../../shared/interfaces/pagination.model';
 
 export const UsersController = {
-  async getUserById(id: string): Promise<Document | null> {
+  async getUserById(id: string): Promise<IUserModel | null> {
     const user = await UserModel.findById(id).populate('rooms').select('-password');
     if (!user) {
       return null;
@@ -11,7 +12,7 @@ export const UsersController = {
     return user;
   },
 
-  async searchUsers(params: ISearchUserQueryParams): Promise<Document[]> {
+  async searchUsers(params: ISearchUserQueryParams): Promise<IPaginationResponse<IUserModel[]>> {
     const page = params.page || 1;
     const pageSize = params.pageSize || 5;
 

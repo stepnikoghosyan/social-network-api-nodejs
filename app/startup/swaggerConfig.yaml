@@ -1,0 +1,594 @@
+swagger: "2.0"
+info:
+  description: "Social network API"
+  version: "1.0.0"
+  title: "Social Network"
+  contact:
+    email: "n.stepan.97@gmail.com"
+host: "localhost:3000"
+basePath: "/v0"
+tags:
+- name: "auth"
+  description: "Login and registration"
+- name: "messages"
+  description: "Messages"
+- name: "rooms"
+  description: "Rooms"
+- name: "users"
+  description: "Users"
+schemes:
+- "http"
+paths:
+# AUTH ROUTES
+  /auth/login:
+    post:
+      tags:
+      - "auth"
+      summary: "Sign in"
+      description: ""
+      operationId: "login"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "User payload"
+        required: true
+        schema:
+          $ref: "#/definitions/IAuthPayload"
+      responses:
+        200:
+          description: "Logged in successfully"
+          schema:
+            $ref: "#/definitions/IAuthResponseModel"
+        400:
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/IFormErrorResponse"
+        404:
+          description: "User not found"
+          schema:
+            $ref: "#/definitions/IErrorResponse"
+  /auth/register:
+    post:
+      tags:
+      - "auth"
+      summary: "Register"
+      description: "Create a new user"
+      operationId: "Register"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "User register payload"
+        required: true
+        schema:
+          $ref: "#/definitions/IRegisterPayload"
+      responses:
+        201:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/IAuthResponseModel"
+        400:
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/IFormErrorResponse"
+        409:
+          description: "User with this email already exists."
+          schema:
+            $ref: "#/definitions/IFormErrorResponse"
+  
+  
+# USERS ROUTES
+  /users:
+    get:
+      tags:
+      - "users"
+      summary: "Get current user"
+      description: "Get current user"
+      operationId: "getCurrentUser"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Current user"
+          schema:
+            $ref: "#/definitions/IUserModel"
+        400:
+          description: "Invalid id"
+          schema:
+            $ref: "#/definitions/IErrorResponse"
+        404:
+          description: "User not found"
+          schema:
+            $ref: "#/definitions/IErrorResponse"
+  /users/search:
+    get:
+      tags:
+      - "users"
+      summary: "Search user"
+      description: "Search user by firstname/lastname/username/email"
+      operationId: "searchUsers"
+      produces:
+      - "application/json"
+      parameters:
+          - $ref: "#/parameters/firstName"
+          - $ref: "#/parameters/lastName"
+          - $ref: "#/parameters/email"
+          - $ref: "#/parameters/page"
+          - $ref: "#/parameters/pageSize"
+      responses:
+        200:
+          description: "Current user"
+          schema:
+            type: "object"
+            properties:
+              count:
+                type: number
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/IUserModel"
+                
+        400:
+          description: "If no parameter was specified or non string value was passed"
+          schema:
+            $ref: "#/definitions/IErrorResponse"
+            
+# ROOMS ROUTES
+  /rooms:
+    get:
+      tags:
+      - "rooms"
+      parameters:
+          - $ref: "#/parameters/page"
+          - $ref: "#/parameters/pageSize"
+          - $ref: "#/parameters/sortByAsc"
+      summary: "Get current user's rooms by pagination"
+      description: "Get current user's rooms by pagination"
+      operationId: "getUsersRoomsByPagination"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Current user's rooms"
+          schema:
+            type: "object"
+            properties:
+              count:
+                type: number
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/IRoomModel"
+        400:
+          description: "Invalid id"
+          schema:
+            $ref: "#/definitions/IErrorResponse"
+        404:
+          description: "User not found"
+          schema:
+            $ref: "#/definitions/IErrorResponse"
+    post:
+      tags:
+      - "rooms"
+      summary: "Create a new room"
+      description: "Create a new room"
+      operationId: "createRoom"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Room payload"
+        required: true
+        schema:
+          $ref: "#/definitions/IRoomPayload"
+      responses:
+        200:
+          description: "Logged in successfully"
+          schema:
+            $ref: "#/definitions/IAuthResponseModel"
+        400:
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/IFormErrorResponse"
+        404:
+          description: "User not found"
+          schema:
+            $ref: "#/definitions/IErrorResponse"
+         
+         
+# MESSAGES ROUTES
+  /messages/{id}:
+    get:
+      tags:
+      - "messages"
+      summary: "Get messages by pagination  for room"
+      description: "Get messages by pagination  for room"
+      operationId: "getMessagesForRoom"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID of room for which you want to get messages"
+          required: true
+          type: "integer"
+        - $ref: "#/parameters/page"
+        - $ref: "#/parameters/pageSize"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Rooms's messages"
+          schema:
+            type: "object"
+            properties:
+              count:
+                type: number
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/IMessageModelWithAuthor"
+        404:
+          description: "Room with given id does not exist"
+          schema: 
+            $ref: "#/definitions/IErrorResponse"
+    
+    put:
+      tags:
+      - "messages"
+      summary: "Edit message by id"
+      description: "Edit message by id"
+      operationId: "editMessageById"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID of the message"
+          required: true
+          type: "integer"
+        - in: "body"
+          name: "body"
+          description: "Message payload"
+          required: true
+          schema:
+            $ref: "#/definitions/IMessageUpdatePayload"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Message edited"
+          schema:
+            type: "object"
+            properties:
+              count:
+                type: number
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/IMessageModelWithAuthor"
+        400:
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/IErrorResponse"
+        404:
+          description: "Message with given id does not exist"
+          schema: 
+            $ref: "#/definitions/IErrorResponse"
+            
+    delete:
+      tags:
+      - "messages"
+      summary: "Delete message by id"
+      description: "Delete message by id"
+      operationId: "deleteMessageById"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID of the message"
+          required: true
+          type: "integer"
+      responses:
+        204:
+          description: "The resource was deleted successfully."
+        404:
+          description: "Message with given id does not exist"
+          schema: 
+            $ref: "#/definitions/IErrorResponse"
+    
+      
+  /messages:
+    post:
+      tags:
+      - "messages"
+      summary: "Create new message in room"
+      description: "Create new message in room"
+      operationId: "creatMessageInRoom"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Message payload"
+        required: true
+        schema:
+          $ref: "#/definitions/IMessagePayload"
+      responses:
+        200:
+          description: "Logged in successfully"
+          schema:
+            $ref: "#/definitions/IMessageModel"
+        400:
+          description: "Invalid input"
+          schema:
+            $ref: "#/definitions/IErrorResponse"
+        404:
+          description: "Room with given id was not found"
+          schema:
+            $ref: "#/definitions/IErrorResponse"      
+          
+          
+definitions:
+  IAuthPayload:
+    type: "object"
+    required:
+    - "email"
+    - "password"
+    properties:
+      email:
+        type: "string"
+        example: "string"
+      password:
+        type: "string"
+        example: "string"
+  IAuthResponseModel:
+    type: "object"
+    properties:
+      userId: 
+        type: "string"
+      firstName: 
+        type: "string"
+      lastName: 
+        type: "string"
+      authToken: 
+        type: "string"
+  IRegisterPayload:
+    type: "object"
+    properties:
+      firstName:
+        type: "string"
+        example: "string"
+      lastName:
+        type: "string"
+        example: "string"
+      gender:
+        type: string
+        enum: [GENDER_MALE, GENDER_FEMALE]
+        example: GENDER_FEMALE
+      isPrivate:
+        type: boolean
+        example: true
+      profilePicture:
+        type: "string"
+        example: "string"
+      email:
+        type: "string"
+        example: "string"
+      password:
+        type: string
+        example: "string"
+  IUserModel:
+    type: "object"
+    properties:
+      firstName:
+        type: "string"
+        example: "string"
+      lastName:
+        type: "string"
+        example: "string"
+      gender:
+        type: "string"
+        enum: [GENDER_MALE, GENDER_FEMALE]
+        example: GENDER_FEMALE
+      isPrivate:
+        type: "boolean"
+        example: false
+      profilePicture:
+        type: "string"
+        example: "string"
+      email:
+        type: "string"
+        example: "string@string.com"
+      password:
+        type: "string"
+        example: "string"
+  IRoomPayload:
+    type: "object"
+    properties:
+      name: 
+        type: "string"
+        example: "string"
+      isPrivate: 
+        type: "boolean"
+        example: true
+      # updated: 
+      #   type: "string"
+      #   format: "date-time"
+      #   example: "2017-07-21T17:32:28Z"
+      users:
+        type: "array"
+        items:
+          type: "string"
+          format: "mongodb ID"
+  IRoomModel:
+    type: "object"
+    properties:
+      name: 
+        type: "string"
+        example: "string"
+      lastMessage:
+        $ref: "#/definitions/IMessageModelWithAuthor"
+      isPrivate: 
+        type: "boolean"
+        example: true
+      updated:
+        type: "string"
+        format: "date-time"
+        example: "2017-07-21T17:32:28Z"
+      users:
+        type: "array"
+        items:
+          type: "string"
+          format: "mongodb ID"
+  IMessagePayload:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        example: "string"
+      room:
+        type: "string"
+        format: "mongdb ID"
+      date:
+        type: "string"
+        format: "date-time"
+        example: "2017-07-21T17:32:28Z"
+      author:
+        type: "string"
+        format: "mongodb ID"
+      updatedDate:
+        type: "string"
+        format: "date-time"
+        example: "2017-07-21T17:32:28Z"
+  IMessageModelWithAuthor:
+    type: "object"
+    properties:
+      room:
+        type: "string"
+      message:
+        type: "string"
+      date:
+        type: "string"
+      author:
+        type: "object"
+        properties:
+          firstName:
+            type: "string"
+            example: "string"
+          lastName:
+            type: "string"
+            example: "string"
+          profilePicture:
+            type: "string"
+            example: "string"
+      updatedDate:
+        type: "string"
+        format: "date-time"
+        example: "2017-07-21T17:32:28Z"
+  IMessageModel:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        example: "string"
+      room:
+        type: "string"
+        format: "mongodb ID"
+      date:
+        type: "string"
+        format: "date-time"
+        example: "2017-07-21T17:32:28Z"
+      author:
+        $ref: "#/definitions/IUserModel"
+      updatedDate:
+        type: "string"
+        format: "date-time"
+        example: "2017-07-21T17:32:28Z"
+  IMessageUpdatePayload:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+        example: "string"
+  IErrorResponse:
+    type: "object"
+    properties:
+      statusCode:
+        type: "integer"
+      errorMessages:
+        type: "string"
+    example:
+      statusCode: 400
+      errorMessage: "string"
+  IFormErrorResponse:
+    type: "object"
+    properties:
+      statusCode:
+        type: "integer"
+      errorMessages:
+        type: "string"
+      field:
+        type: "string"
+    example:
+      statusCode: 400
+      errorMessage: "string"
+      field: "string"
+  
+  
+parameters:
+  id:
+    name: "id"
+    in: path
+    description: "id of resource"
+    required: true
+    type: "string"
+  firstName:
+    name: firstName
+    in: query
+    description: "User first name"
+    required: false
+    type: "string"
+  lastName:
+    name: lastName
+    in: query
+    description: "User last name"
+    required: false
+    type: "string"
+  email:
+    name: email
+    in: query
+    description: "User email"
+    required: false
+    type: "string"
+  page:
+    name: page
+    in: query
+    description: "Page"
+    required: false
+    type: "integer"
+  pageSize:
+    name: pageSize
+    in: query
+    description: "Page size (items count on each page)"
+    required: false
+    type: "integer"
+  sortByAsc:
+    name: sortByAsc
+    in: query
+    description: "Sort results by ascending order (dafault = false)"
+    required: false
+    type: "boolean"
+        
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
