@@ -26,7 +26,7 @@ export const RoomsController = {
     const pageSize = queryParams.pageSize || 5;
     const filterByUpdatedAsc = queryParams.sortByAsc ? 1 : -1;
 
-    const count = await RoomModel.find({users: userId}).count();
+    const count = await RoomModel.find({users: userId}).countDocuments();
 
     const rooms = await RoomModel
       .find({users: userId})

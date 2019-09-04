@@ -12,7 +12,7 @@ export const UsersController = {
     return user;
   },
 
-  async searchUsers(params: ISearchUserQueryParams): Promise<IPaginationResponse<IUserModel[]>> {
+  async searchUsers(params: ISearchUserQueryParams): Promise<IPaginationResponse<IUserModel>> {
     const page = params.page || 1;
     const pageSize = params.pageSize || 5;
 
@@ -31,10 +31,15 @@ export const UsersController = {
       }
     });
 
+    const count = await UserModel.find({$or: filters}).countDocuments();
+
     const users = await UserModel
       .find({ $or: filters })
       .skip((page - 1) * pageSize)
       .limit(pageSize);
-    return users;
+    return {
+      count,
+      items: users
+    };
   }
 };
