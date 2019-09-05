@@ -47,7 +47,7 @@ export const RoomModel = model<IRoomModel>('Room', roomSchema);
 
 export interface IRoomModel extends Document {
   name: string;
-  lastMessage: string | IMessageModel; // TODO: add IMessageModel
+  lastMessage: string | IMessageModel;
   isPrivate: boolean;
   updated: Date;
   users: Array<string | IUserModel>;
