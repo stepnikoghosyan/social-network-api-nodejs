@@ -1,5 +1,4 @@
 import { UserModel, ISearchUserQueryParams, IUserModel } from './user.model';
-import { Document } from 'mongoose';
 import { IPaginationResponse } from '../../shared/interfaces/pagination.model';
 
 export const UsersController = {

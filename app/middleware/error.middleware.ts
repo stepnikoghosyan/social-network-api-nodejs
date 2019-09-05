@@ -5,6 +5,6 @@ export default function(err: any, req: Request, res: Response, next: NextFunctio
   errorHandler(res, {
     statusCode: err.status || 500,
     errorMessage: err.message || 'Internal server error. Something failed.',
-    error: err
+    // error: err
   });
 }

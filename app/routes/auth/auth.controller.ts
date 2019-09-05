@@ -4,6 +4,7 @@ import { compare, genSalt, hash } from 'bcrypt';
 import { IAuthPayload, validateLogin, IAuthResponseModel, IRegisterPayload, validateUser } from './auth.model';
 import { UserModel } from '../users/user.model';
 import { IControllerResult } from '../../shared/interfaces/controller-result.model';
+import { USER_IMAGES_URL } from '../../constants/userImagesUrl';
 
 export const AuthController = {
   async login(payload: IAuthPayload): Promise<IControllerResult<IAuthResponseModel>> {
@@ -82,7 +83,8 @@ export const AuthController = {
     values.rooms = [];
 
     const user = new UserModel({
-      ...values
+      ...values,
+      profilePicture: USER_IMAGES_URL.defaultProfilePicture
     });
 
     const salt = await genSalt(10);

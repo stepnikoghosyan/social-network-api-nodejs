@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import {join} from 'path';
 import cors from 'cors';
 
 // middlewares
@@ -20,7 +21,7 @@ export default function(app: express.Application) {
     // swagger
     swagger(app);
 
-    app.use('/static', express.static('static'));
+    app.use('/static', express.static('app/static'));
 
     // routes
     app.use('/v0/auth', authRoutes);
