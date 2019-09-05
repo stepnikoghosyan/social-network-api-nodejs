@@ -23,6 +23,11 @@ export interface IAuthResponseModel {
   firstName: string;
   lastName: string;
   authToken: string;
+  refreshToken: string;
+  profilePicture: string;
+  // readonly last_online: Date;
+  // readonly is_online: boolean;
+  // readonly friends: Array<UserModel>;
 }
 
 export function validateLogin(user: IAuthPayload) {

@@ -50,7 +50,9 @@ export const AuthController = {
         userId: user._id,
         firstName: user.firstName,
         lastName: user.lastName,
-        authToken: token
+        authToken: token,
+        refreshToken: '', // TODO: add refresh token implementation
+        profilePicture: user.profilePicture
       }
     };
   },
