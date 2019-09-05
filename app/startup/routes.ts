@@ -12,6 +12,7 @@ import usersRoutes from '../routes/users/users.router';
 import roomsRoutes from '../routes/rooms/rooms.router';
 import messagesRoutes from '../routes/messages/messages.router';
 import friendsRoutes from '../routes/friends/friends.router';
+import errorHandler from '../shared/errorHandler';
 
 export default function(app: express.Application) {
     app.use(cors());
@@ -31,6 +32,9 @@ export default function(app: express.Application) {
     app.use('/v0/friends', auth, friendsRoutes);
 
     app.use('*', (req: Request, res: Response) => {
-      return res.status(404).send('Not found.');
+      return errorHandler(res, {
+        errorMessage: `Route '${req.url}' Not found.`,
+        statusCode: 404
+      });
     });
 }
