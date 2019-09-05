@@ -1,6 +1,6 @@
 import { IQueryParamsPayload, IPaginationResponse } from '../../shared/interfaces/pagination.model';
 import { IControllerResult } from '../../shared/interfaces/controller-result.model';
-import { IFriendModel, FriendModel, validateFriendRequest, IFriendPayload, validateFriendUpdate, IFriendDeletePalyoad } from './friend.model';
+import { IFriendModel, FriendModel, validateFriendRequest, IFriendPayload, IFriendDeletePalyoad } from './friend.model';
 import { FRIEND_REQUEST_STATUS } from '../../constants/friendRequestStatus.enum';
 
 const ErrorMessages: { [key: string]: string } = {
@@ -75,6 +75,16 @@ export const FriendsController = {
         data: null,
         error: {
           errorMessage: error.details[0].message,
+          statusCode: 400
+        }
+      };
+    }
+
+    if (userID === friendID) {
+      return {
+        data: null,
+        error: {
+          errorMessage: 'You can not send frienq request to yourself.',
           statusCode: 400
         }
       };

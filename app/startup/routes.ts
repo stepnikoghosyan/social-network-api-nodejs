@@ -27,7 +27,7 @@ export default function(app: express.Application) {
     app.use('/v0/users', auth, usersRoutes);
     app.use('/v0/rooms', roomsRoutes);
     app.use('/v0/messages', messagesRoutes);
-    app.use('/v0/friends', friendsRoutes);
+    app.use('/v0/friends', auth, friendsRoutes);
 
     app.use('*', (req: Request, res: Response) => {
       return res.status(404).send('Not found.');

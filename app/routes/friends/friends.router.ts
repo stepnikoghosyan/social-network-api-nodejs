@@ -9,6 +9,7 @@ import errorHandler from '../../shared/errorHandler';
 import { FriendsController } from './friends.controller';
 import { IFriendPayload, IFriendDeletePalyoad } from './friend.model';
 import validateObjectIdMiddleware from '../../middleware/validateObjectId.middleware';
+import { FRIEND_REQUEST_STATUS } from '../../constants/friendRequestStatus.enum';
 
 router.get('/', async (req, res) => {
   const friends = await FriendsController.getFriendsByPagination(req.user._id, req.query);
@@ -21,7 +22,10 @@ router.get('/pending', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const payload: IFriendPayload = req.body;
+  const payload: IFriendPayload = {
+    ...req.body,
+    status: FRIEND_REQUEST_STATUS.PENDING
+  };
   const result = await FriendsController.createFriendRequest(req.user._id, payload.friendID, payload.status);
   if (result.error) {
     return errorHandler(res, result.error);

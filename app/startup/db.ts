@@ -4,7 +4,8 @@ import config from '../config/config';
 export default function() {
     const options = {
         useNewUrlParser: true,
-        useFindAndModify: false
+        useCreateIndex: true
+        // useFindAndModify: false
     };
 
     console.log('DB string:', config.get('dbConStr'));
