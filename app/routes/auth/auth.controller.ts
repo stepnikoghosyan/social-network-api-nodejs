@@ -58,7 +58,10 @@ export const AuthController = {
   },
 
   async register(values: IRegisterPayload): Promise<IControllerResult<IAuthResponseModel>> {
-    const { error } = validateUser(values);
+    const { error } = validateUser({
+      ...values,
+      profilePicture: USER_IMAGES_URL.defaultProfilePicture
+    });
     if (error) {
       return {
         error: {

@@ -362,6 +362,10 @@ definitions:
         type: "string"
       authToken: 
         type: "string"
+      refreshToken:
+        type: "string"
+      profilePicture:
+        type: "string"
   IRegisterPayload:
     type: "object"
     properties:

@@ -42,7 +42,7 @@ userSchema.methods.generateAuthToken = function(): string {
         lastName: this.lastName,
         email: this.email,
         gender: this.gender
-    }, config.get('jwtPrivateKey'));
+    }, config.get('jwtPrivateKey'), {expiresIn: '7d'});
     return token;
 };
 

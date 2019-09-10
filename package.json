@@ -4,7 +4,6 @@
   "description": "Chat application API (Node.js + Express + MongoDB)",
   "main": "./app/main.ts",
   "scripts": {
-    "start": "nodemon index.js",
     "tsc": "tsc",
     "dev": "ts-node-dev --respawn --transpileOnly ./app/main.ts",
     "prod": "tsc && node ./build/main.js"
